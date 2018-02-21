@@ -1,0 +1,59 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "title": "Product",
+    "description": "A product from Acme's catalog",
+    "type": "object",
+    "properties": {
+        "id": {
+            "description": "The unique identifier for a product",
+            "type": "integer"
+        },
+        "name": {
+            "description": "Name of the product",
+            "type": "string"
+        },
+        "price": {
+            "type": "number",
+            "exclusiveMinimum": 0
+        },
+        "dimensions": {
+            "$id": "/properties/dimensions",
+            "type": "object",
+            "properties": {
+                "width": {
+                    "$id": "/properties/dimensions/properties/width",
+                    "type": "integer",
+                    "title": "The Width Schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": 0,
+                    "examples": [
+                        5
+                    ]
+                },
+                "height": {
+                    "$id": "/properties/dimensions/properties/height",
+                    "type": "integer",
+                    "title": "The Height Schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": 0,
+                    "examples": [
+                        10
+                    ]
+                }
+            }
+        },
+        "tags": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "minItems": 1,
+            "uniqueItems": true
+        }
+    },
+    "required": [
+        "id",
+        "name",
+        "price"
+    ]
+}
