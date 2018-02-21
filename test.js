@@ -10,22 +10,17 @@ const traverseObject = (obj) => {
     var tmp = {}
     Object.keys(obj).forEach(key => {
         if (key == "properties") {
-           console.log('>>', key)
-           tmp[key] = traverseObject(obj[key])
-        }
-        else if (typeof obj[key] == 'object') {
-            if (obj[key]["type"] == "array") {
-                tmp[key] = [obj[key]["items"]["type"]]
-            } else {
-                buildCustomType(obj[key])
-                tmp[key] = obj[key]["type"];
-            }
+            tmp = traverseObject(obj[key]) // recurse on root object
+        } else if (obj[key]["properties"]) {
+            tmp[key] = traverseObject(obj[key]["properties"]) // recurse on next level object
+        } else if (typeof obj[key] == 'object') {
+            tmp[key] = obj[key]["type"];
         }
     });
     return tmp
 };
 
-var final = traverseObject(JSON.parse(contents), final)
+var final = traverseObject(JSON.parse(contents))
 
 console.log(final)
 // fs.writeFile("/tmp/test", JSON.stringify(final), function (err) {
@@ -34,4 +29,4 @@ console.log(final)
 //     }
 
 //     console.log("The file was saved!");
-// }); 
+// });
