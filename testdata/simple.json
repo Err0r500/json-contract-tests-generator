@@ -6,7 +6,9 @@
     "properties": {
         "id": {
             "description": "The unique identifier for a product",
-            "type": "integer"
+            "type": "integer",
+            "minimum": 1000,
+            "maximum": 13400
         },
         "name": {
             "description": "Name of the product",
@@ -28,7 +30,9 @@
                     "default": 0,
                     "examples": [
                         5
-                    ]
+                    ],
+                    "minimum": 0,
+                    "maximum": 134
                 },
                 "height": {
                     "$id": "/properties/dimensions/properties/height",

@@ -1,63 +1,65 @@
 var fs = require('fs');
 
-var contents = fs.readFileSync('testdata/simple.json');
+class Generator {
+    constructor() {
+        if (new.target === Generator) {
+            throw new TypeError("Cannot construct Abstract instances directly");
+        }
 
-class generator {
-    constructor(funcToApply, value) {
-        this.funcToApply = funcToApply;
-        this.value = value;
-    }
-
-    get generate() {
-        return this.funcToApply(this.value);
+        if ('generateValid' in this === false) {
+            throw new TypeError("Must override method generateValid");
+        }
+        if ('generateInvalid' in this === false) {
+            throw new TypeError("Must override method generateInvalid");
+        }
     }
 }
 
 
-class intWithMinConstrain extends generator {
+class IntWithMinConstrain extends Generator {
     constructor(value) {
         super()
         this.value = value;
     }
 
-    valid(min) {
-        return min + 1
-    }
-
-    invalid(min) {
-        return min - 1
-    }
-
     get generateValid() {
-        return new generator(this.valid, this.value).generate
+        return this.value
     }
-    get generateInValid() {
-        return new generator(this.invalid, this.value).generate
+    get generateInvalid() {
+        return this.value - 1
     }
 }
 
-class intWithMaxConstrain extends generator {
+class IntWithMaxConstrain extends Generator {
     constructor(value) {
         super()
         this.value = value;
     }
 
-    valid(min) {
-        return min - 1
-    }
-
-    invalid(min) {
-        return min + 1
-    }
-
     get generateValid() {
-        return new generator(this.valid, this.value).generate
+        return this.value
     }
-    get generateInValid() {
-        return new generator(this.invalid, this.value).generate
+
+    get generateInvalid() {
+        return this.value + 1
     }
 }
 
+const genIntArray = (intObj) => {
+    var tmp = []
+    if (intObj.minimum) {
+        tmp.push(new IntWithMinConstrain(intObj.minimum))
+    } else {
+        tmp.push(new IntWithMinConstrain(0))
+    }
+
+    if (intObj.maximum) {
+        tmp.push(new IntWithMaxConstrain(intObj.maximum))
+    } else {
+        tmp.push(new IntWithMaxConstrain(100000))
+    }
+    return tmp
+}
 
 const traverseObject = (obj) => {
     var tmp = {}
@@ -70,17 +72,15 @@ const traverseObject = (obj) => {
         } else if (obj[key]["properties"]) {
             tmp[key] = traverseObject(obj[key]["properties"]) // recurse on next level object
         } else if (typeof obj[key] == 'object') {
-            tmp[key] = obj[key]["type"];
             if (obj[key]["type"] == "integer") {
-                tmp[key] = [new intWithMinConstrain(12), new intWithMaxConstrain(1001)]
+                tmp[key] = genIntArray(obj[key])
             }
+            // tmp[key] = obj[key]["type"];
         }
     });
     return tmp
 };
 
-var final = traverseObject(JSON.parse(contents))
-var dataset = []
 
 // todo recursive contruction too
 const buildSet = (obj, valid) => {
@@ -89,12 +89,19 @@ const buildSet = (obj, valid) => {
             for (let i = 0; i < obj[key].length; i++) {
                 var tmpObj = JSON.parse(JSON.stringify(final))
                 if (valid) tmpObj[key] = obj[key][i].generateValid;
-                else tmpObj[key] = obj[key][i].generateValid;
+                else tmpObj[key] = obj[key][i].generateInvalid;
+
                 dataset.push(tmpObj)
             }
         }
     });
 };
 
-buildSet(final, true)
+var dataset = []
+var contents = fs.readFileSync('testdata/simple.json');
+var final = traverseObject(JSON.parse(contents))
+
+buildSet(final, false)
+console.log(final)
+console.log(' ')
 console.log(dataset)
