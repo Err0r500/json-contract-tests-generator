@@ -1,13 +1,5 @@
 nested = require('./nested');
 
-describe('getNested', function () {
-    it('get simple nesting', function () {
-        expect('foo').toEqual(nested.getNested({
-            id: "foo"
-        }, 'id'))
-    });
-});
-
 describe('setNested', function () {
     it('set simple nesting', function () {
         var initial = {

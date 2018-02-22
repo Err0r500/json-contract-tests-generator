@@ -1,22 +1,23 @@
 var fs = require('fs');
-var generators = require('./generators')
+var intGen = require('./generators/intGenerator')
 
-const genIntArray = (currentPath, intObj) => {
-    var tmp = []
-    if (intObj.minimum) {
-        tmp.push(new generators.IntWithMinConstrain(intObj.minimum))
-    } else {
-        tmp.push(new generators.IntWithMinConstrain(0))
+const genArray = (currentPath, obj) => {
+    if (currentPath == '') {
+        throw new TypeError("genArray received an empty string as path");
     }
 
-    if (intObj.maximum) {
-        tmp.push(new generators.IntWithMaxConstrain(intObj.maximum))
-    } else {
-        tmp.push(new generators.IntWithMaxConstrain(100000))
-    }
-    return {
-        path: currentPath,
-        funcs: tmp
+    switch (typeof obj) {
+        case "number":
+            if (obj % 1 == 0) {
+                return intGen.generate(currentPath, obj)
+            } else {
+                throw new TypeError("genArray unHandled type" + typeof obj)
+            }
+            break
+
+        default:
+            // throw new TypeError("genArray unknown type" + typeof obj)
+
     }
 }
 
@@ -29,12 +30,12 @@ const traverseObject = (obj, currentPath = '', arrayToOutput = []) => {
         } else if (key == "required") {
             tmp.required_fields = obj[key] // add required fields to root object
         } else if (obj[key]["properties"]) {
-            tmp[key] = traverseObject(obj[key]["properties"], tmpPath+= '.' + key, arrayToOutput) // recurse on next level object
+            tmp[key] = traverseObject(obj[key]["properties"], tmpPath += '.' + key, arrayToOutput) // recurse on next level object
         } else if (typeof obj[key] == 'object') {
             if (obj[key]["type"] == "integer") {
-                arrayToOutput.push(genIntArray(currentPath + '.' + key, obj[key]))
+                arrayToOutput.push(genArray(currentPath + '.' + key, obj[key]))
             }
-            tmp[key] = obj[key]["type"];
+            // tmp[key] = obj[key]["type"];
         }
     });
     return tmp
@@ -43,10 +44,12 @@ const traverseObject = (obj, currentPath = '', arrayToOutput = []) => {
 const buildDataSet = (jsonSchemaPath, model = {}, dataset = []) => {
     var contents = fs.readFileSync(jsonSchemaPath);
     model = traverseObject(JSON.parse(contents), '', dataset)
-    console.log(model, dataset)
 }
 
 var dataset = []
 var model = {}
 buildDataSet('testdata/simple.json', model, dataset)
-console.log("laskdj")
+
+module.exports = {
+    genArray,
+}

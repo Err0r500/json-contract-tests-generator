@@ -1,24 +1,5 @@
-var exports = module.exports = {};
 
-exports.getNested = (theObject, path) => {
-    try {
-        separator = '.';
-
-        return path.
-        replace('[', separator).replace(']', '').
-        split(separator).
-        reduce(
-            function (obj, property) {
-                return obj[property];
-            }, theObject
-        );
-
-    } catch (err) {
-        return undefined;
-    }
-}
-
-exports.setNested = (theObject, path, funcToApply) => {
+setNested = (theObject, path, funcToApply) => {
     try {
         separator = '.';
         path.
@@ -37,3 +18,7 @@ exports.setNested = (theObject, path, funcToApply) => {
     }
     return theObject
 }
+
+module.exports = {
+    setNested
+};
