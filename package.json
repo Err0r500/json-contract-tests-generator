@@ -1,0 +1,23 @@
+{
+  "name": "my-awesome-package",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "jasmine"
+  },
+  "devDependencies": {
+    "jasmine": "^3.0.0"
+  },
+  "main": "main.js",
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Err0r500/json-generator.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Err0r500/json-generator/issues"
+  },
+  "homepage": "https://github.com/Err0r500/json-generator#readme",
+  "description": ""
+}

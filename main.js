@@ -82,6 +82,7 @@ const traverseObject = (obj) => {
 };
 
 
+
 // todo recursive contruction too
 const buildSet = (obj, valid) => {
     Object.keys(obj).forEach(key => {
