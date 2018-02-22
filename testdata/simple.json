@@ -14,10 +14,6 @@
             "description": "Name of the product",
             "type": "string"
         },
-        "price": {
-            "type": "number",
-            "exclusiveMinimum": 0
-        },
         "dimensions": {
             "$id": "/properties/dimensions",
             "type": "object",
@@ -34,6 +30,34 @@
                     "minimum": 0,
                     "maximum": 134
                 },
+                "otherDimensions": {
+                    "$id": "/properties/dimensions",
+                    "type": "object",
+                    "properties": {
+                        "maxWidth": {
+                            "$id": "/properties/dimensions/properties/width",
+                            "type": "integer",
+                            "title": "The Width Schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": 0,
+                            "examples": [
+                                5
+                            ],
+                            "minimum": 0,
+                            "maximum": 134
+                        },
+                        "minHeight": {
+                            "$id": "/properties/dimensions/properties/height",
+                            "type": "integer",
+                            "title": "The Height Schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": 0,
+                            "examples": [
+                                10
+                            ]
+                        }
+                    }
+                },
                 "height": {
                     "$id": "/properties/dimensions/properties/height",
                     "type": "integer",
@@ -45,6 +69,10 @@
                     ]
                 }
             }
+        },
+        "price": {
+            "type": "integer",
+            "exclusiveMinimum": 0
         },
         "tags": {
             "type": "array",
