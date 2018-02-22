@@ -43,11 +43,10 @@ const traverseObject = (obj, currentPath = '', arrayToOutput = []) => {
 const buildDataSet = (jsonSchemaPath, model = {}, dataset = []) => {
     var contents = fs.readFileSync(jsonSchemaPath);
     model = traverseObject(JSON.parse(contents), '', dataset)
+    console.log(model, dataset)
 }
 
 var dataset = []
 var model = {}
 buildDataSet('testdata/simple.json', model, dataset)
-console.log(model)
-console.log(' ')
-console.log(dataset)
+console.log("laskdj")

@@ -2,10 +2,10 @@
   "name": "my-awesome-package",
   "version": "1.0.0",
   "scripts": {
-    "test": "jasmine"
+    "test": "jest --watch"
   },
   "devDependencies": {
-    "jasmine": "^3.0.0"
+    "jest": "^22.4.0"
   },
   "main": "main.js",
   "dependencies": {},

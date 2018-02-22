@@ -1,4 +1,4 @@
-nested = require('../nested');
+nested = require('./nested');
 
 describe('getNested', function () {
     it('get simple nesting', function () {
