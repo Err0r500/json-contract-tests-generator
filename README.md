@@ -1,1 +1,1 @@
-[![codecov](https://codecov.io/gh/Err0r500/json-generator/branch/master/graph/badge.svg?token=XtyP0fo4VX)](https://codecov.io/gh/Err0r500/json-generator)
+[![codecov](https://codecov.io/gh/Err0r500/json-contract-tests-generator/branch/master/graph/badge.svg)](https://codecov.io/gh/Err0r500/json-contract-tests-generator)
