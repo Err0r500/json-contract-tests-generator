@@ -32,9 +32,7 @@ const traverseObject = (obj, currentPath = '', arrayToOutput = []) => {
         } else if (obj[key]["properties"]) {
             tmp[key] = traverseObject(obj[key]["properties"], tmpPath += '.' + key, arrayToOutput) // recurse on next level object
         } else if (typeof obj[key] == 'object') {
-            if (obj[key]["type"] == "integer") {
-                arrayToOutput.push(genArray(currentPath + '.' + key, obj[key]))
-            }
+            arrayToOutput.push(genArray(currentPath + '.' + key, obj[key]))
             // tmp[key] = obj[key]["type"];
         }
     });

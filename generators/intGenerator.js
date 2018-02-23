@@ -1,54 +1,72 @@
-const gen = require('./generators')
+const gen = require('./_main')
 
-IntWithMinConstrain = class IntWithMinConstrain extends gen.Generator {
+class _Int extends gen.Generator {
     constructor(value) {
         super()
+        if (typeof value != 'number' || value % 1 != 0) {
+            throw new TypeError("a _Int constructor needs an int");
+        }
+
         this.value = value;
     }
+
+    get generateValid() {
+        throw new TypeError("_Int generateValid called");        
+    }
     
+    get generateInvalid() {
+        throw new TypeError("_Int generateInvalid called");        
+    }
+}
+
+class IntWithMinConstrain extends _Int {
+    constructor(value) {
+        super(value)
+    }
+
     get generateValid() {
         return this.value
     }
+
     get generateInvalid() {
         return this.value - 1
     }
 }
 
-IntWithMaxConstrain = class IntWithMaxConstrain extends gen.Generator {
+class IntWithMaxConstrain extends _Int {
     constructor(value) {
-        super()
-        this.value = value;
+        super(value)
     }
-    
+
     get generateValid() {
         return this.value
     }
-    
+
     get generateInvalid() {
         return this.value + 1
     }
 }
 
 generate = (currentPath, intObj) => {
-    var tmp = []
+    var funcsToApply = []
+
     if (intObj.minimum) {
-        tmp.push(new generators.IntWithMinConstrain(intObj.minimum))
+        funcsToApply.push(new IntWithMinConstrain(intObj.minimum))
     } else {
-        tmp.push(new generators.IntWithMinConstrain(0))
+        funcsToApply.push(new IntWithMinConstrain(Number.MIN_SAFE_INTEGER))
     }
-    
+
     if (intObj.maximum) {
-        tmp.push(new generators.IntWithMaxConstrain(intObj.maximum))
+        funcsToApply.push(new IntWithMaxConstrain(intObj.maximum))
     } else {
-        tmp.push(new generators.IntWithMaxConstrain(100000))
+        funcsToApply.push(new IntWithMaxConstrain(Number.MAX_SAFE_INTEGER))
     }
-    
-    return {
-        path: currentPath,
-        funcs: tmp
-    }
+
+    return new gen.Transformer(currentPath, funcsToApply)
 }
 
 module.exports = {
     generate,
+    IntWithMinConstrain,
+    IntWithMaxConstrain,
 };
