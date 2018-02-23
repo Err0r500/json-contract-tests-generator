@@ -43,19 +43,19 @@ describe('Generator is an abstract class ... kind of : ', function () {
 describe('Transformer ', function () {
     test("needs a path", () => {
         expect(() => {
-            new gen.Transformer('', [() => 'dummy'])
+            new gen.Transformer('', [new intGen.IntWithMinConstrain(1)])
         }).toThrow();
     })
 
-    test("needs a array of functions", () => {
+    test("needs an array of tranformers", () => {
         expect(() => {
             new gen.Transformer('path', 'hey')
         }).toThrow();
         expect(() => {
-            new gen.Transformer('path', [1, 2, 3])
+            new gen.Transformer('path', [])
         }).toThrow();
         expect(() => {
-            new gen.Transformer('path', [])
+            new gen.Transformer('path', [{id: 1}])
         }).toThrow();
     })
 

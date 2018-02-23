@@ -22,16 +22,16 @@ class Transformer {
         if (path == '') {
             throw new TypeError("a Tranformer needs a path");
         }
-
+        
         if (!Array.isArray(functionsToApply)) {
             throw new TypeError("a Tranformer needs an array of functionsToApply");
         }
-
+        
         if (functionsToApply.length == 0) {
             throw new TypeError("a Tranformer needs a non empty array of functionsToApply");
         }
 
-        if (!functionsToApply[0].isGenerator()) {
+        if (typeof(functionsToApply[0].isGenerator) === 'undefined' || !functionsToApply[0].isGenerator()) {
             throw new TypeError("a Tranformer needs an array of functions for functionsToApply");
         }
 

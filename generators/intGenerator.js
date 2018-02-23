@@ -69,4 +69,5 @@ module.exports = {
     generate,
     IntWithMinConstrain,
     IntWithMaxConstrain,
+    _Int
 };

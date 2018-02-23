@@ -1,11 +1,14 @@
 const gen = require('./_main')
 const intGen = require('./intGenerator')
 
-describe('intGenerator', function () {
+describe('_Int constructor', function () {
     test("must be constructed from an int", () => {
+        expect(new intGen._Int(1)).toEqual(expect.any(intGen._Int));
+        
         expect(() => {
             new intGen._Int('blabl')
         }).toThrow();
+
         expect(() => {
             new intGen._Int(12).generateInvalid
         }).toThrow();
@@ -13,6 +16,11 @@ describe('intGenerator', function () {
             new intGen._Int(12).generateValid
         }).toThrow();
 
+    });
+});
+
+describe('IntWith (Min/Max) Constrain Generator', function () {
+    test("must be constructed from an int", () => {
         expect(() => {
             new intGen.IntWithMinConstrain('blabl')
         }).toThrow();
@@ -26,7 +34,7 @@ describe('intGenerator', function () {
 });
 
 describe('intMinGenerator', function () {
-    test("must be return an int", () => {
+    test("must return an int", () => {
         let tmp = new intGen.IntWithMinConstrain(10)
         expect(tmp.generateInvalid).toEqual(expect.any(Number));
         expect(tmp.generateValid).toEqual(expect.any(Number));
@@ -34,7 +42,7 @@ describe('intMinGenerator', function () {
 });
 
 describe('intMaxGenerator', function () {
-    test("must be return an int", () => {
+    test("must return an int", () => {
         let tmp = new intGen.IntWithMaxConstrain(10)
         expect(tmp.generateInvalid).toEqual(expect.any(Number));
         expect(tmp.generateValid).toEqual(expect.any(Number));

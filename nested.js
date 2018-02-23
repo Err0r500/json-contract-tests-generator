@@ -1,21 +1,20 @@
-
 setNested = (theObject, path, funcToApply) => {
-    try {
-        separator = '.';
-        path.
-        replace('[', separator).replace(']', '').
-        split(separator).
-        reduce(
-            function (obj, property, index, array) {
-                if (index == array.length - 1) { 
+    separator = '.';
+    path.
+    replace('[', separator).replace(']', '').
+    split(separator).
+    reduce(
+         (obj, property, index, array) => {
+            if (index == array.length - 1) { // end of the recursion
+                if (typeof obj[property] === 'undefined') {
+                    throw new TypeError("nothing found at path " + path)
+                } else {
                     obj[property] = funcToApply();
-                } 
-                return obj[property]
-            }, theObject
-        );
-    } catch (err) {
-        return undefined;
-    }
+                }
+            }
+            return obj[property]
+        }, theObject
+    );
     return theObject
 }
 
