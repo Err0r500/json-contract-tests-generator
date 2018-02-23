@@ -1,7 +1,7 @@
-var fs = require('fs');
+let fs = require('fs');
 
 const objectFromFile = (jsonSchemaPath) => {
-    var contents = fs.readFileSync(jsonSchemaPath);
+    let contents = fs.readFileSync(jsonSchemaPath);
     return JSON.parse(contents)
 }
 

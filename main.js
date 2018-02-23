@@ -17,8 +17,8 @@ const genArray = (currentPath, obj) => {
 }
 
 const traverseObject = (obj, currentPath = '', arrayToOutput = [], Cb) => {
-    var tmp = {}
-    var tmpPath = currentPath
+    let tmp = {}
+    let tmpPath = currentPath
 
     Object.keys(obj).forEach(key => {
         if (key == "properties") {

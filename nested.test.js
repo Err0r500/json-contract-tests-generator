@@ -2,7 +2,7 @@ nested = require('./nested');
 
 describe('setNested', function () {
     it('throws an error if the path is not found in the object', function () {
-        var initial = {
+        let initial = {
             name: "matth",
             id: "foo"
         }
@@ -13,11 +13,11 @@ describe('setNested', function () {
     });
 
     it('set simple nesting', function () {
-        var initial = {
+        let initial = {
             name: "matth",
             id: "foo"
         }
-        var expected = {
+        let expected = {
             id: "bar",
             name: "matth"
         }

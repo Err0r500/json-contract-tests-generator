@@ -1,7 +1,7 @@
 const intGen = require('./generators/intGenerator')
 const mains = require('./main')
 const h = require('./helpers')
-var fs = require('fs');
+let fs = require('fs');
 
 
 const testValidPath = 'anyPath'

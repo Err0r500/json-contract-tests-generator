@@ -48,7 +48,7 @@ class IntWithMaxConstrain extends _Int {
 }
 
 generate = (currentPath, intObj) => {
-    var funcsToApply = []
+    let funcsToApply = []
 
     if (intObj.minimum) {
         funcsToApply.push(new IntWithMinConstrain(intObj.minimum))
