@@ -1,5 +1,5 @@
-var fs = require('fs');
-var intGen = require('./generators/intGenerator')
+const intGen = require('./generators/intGenerator')
+const h = require('./helpers')
 
 const genArray = (currentPath, obj) => {
     if (currentPath == '') {
@@ -21,33 +21,31 @@ const genArray = (currentPath, obj) => {
     }
 }
 
-const traverseObject = (obj, currentPath = '', arrayToOutput = []) => {
+const traverseObject = (obj, currentPath = '', arrayToOutput = [], Cb) => {
     var tmp = {}
     var tmpPath = currentPath
     Object.keys(obj).forEach(key => {
         if (key == "properties") {
-            tmp = traverseObject(obj[key], currentPath, arrayToOutput) // recurse on root object
+            tmp = traverseObject(obj[key], currentPath, arrayToOutput, Cb) // recurse on root object
         } else if (key == "required") {
             tmp.required_fields = obj[key] // add required fields to root object
         } else if (obj[key]["properties"]) {
-            tmp[key] = traverseObject(obj[key]["properties"], tmpPath += '.' + key, arrayToOutput) // recurse on next level object
+            tmp[key] = traverseObject(obj[key]["properties"], tmpPath += '.' + key, arrayToOutput, Cb) // recurse on next level object
         } else if (typeof obj[key] == 'object') {
-            arrayToOutput.push(genArray(currentPath + '.' + key, obj[key]))
-            // tmp[key] = obj[key]["type"];
+            arrayToOutput.push(Cb(currentPath + '.' + key, obj[key]))
+            tmp[key] = obj[key]["type"];
         }
     });
     return tmp
 };
 
-const buildDataSet = (jsonSchemaPath, model = {}, dataset = []) => {
-    var contents = fs.readFileSync(jsonSchemaPath);
-    model = traverseObject(JSON.parse(contents), '', dataset)
+const buildDataSet = (jsonSchemaPath, model = {}, dataset = [], Cb) => {
+    model = traverseObject(h.objectFromFile(jsonSchemaPath), '', dataset, Cb)
+    console.log(model)
 }
-
-var dataset = []
-var model = {}
-buildDataSet('testdata/simple.json', model, dataset)
 
 module.exports = {
     genArray,
+    buildDataSet,
+    traverseObject,
 }

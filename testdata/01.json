@@ -1,0 +1,23 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "title": "title",
+    "description": "verySimple json schema",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer"
+        },
+        "name": {
+            "type": "string"
+        },
+        "dimension": {
+            "type": "object",
+            "properties": {
+                "width": {
+                    "type": "integer",
+                    "description": "An explanation about the purpose of this instance"
+                }
+            }
+        }
+    }
+}

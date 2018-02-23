@@ -22,7 +22,7 @@ class _Int extends gen.Generator {
 class IntWithMinConstrain extends _Int {
     constructor(value) {
         super(value)
-    }
+    } 
 
     get generateValid() {
         return this.value
