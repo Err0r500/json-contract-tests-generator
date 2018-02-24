@@ -4,7 +4,7 @@ const h = require('./helpers')
 let fs = require('fs');
 
 
-const testValidPath = 'anyPath'
+const testValidPath = 'anyPath' 
 
 describe('genArray', function () {
     test('genArray throws an error if it receives an empty path', () => {

@@ -82,24 +82,24 @@ describe('IntWith (Min/Max) Constrain Generator', function () {
         expect(() => {
             new intGen.IntWithMinConstrain('blabl')
         }).toThrow();
-        expect(new intGen.IntWithMinConstrain(1)).toEqual(expect.any(gen.Generator));
+        expect(new intGen.IntWithMinConstrain({minimum:1})).toEqual(expect.any(gen.Generator));
 
         expect(() => {
             new intGen.IntWithMaxConstrain('blabl')
         }).toThrow();
-        expect(new intGen.IntWithMaxConstrain(1)).toEqual(expect.any(gen.Generator));
+        expect(new intGen.IntWithMaxConstrain({maximum:1})).toEqual(expect.any(gen.Generator));
     });
 });
 
 describe('intMinGenerator', function () {
     test("must return an int", () => {
-        let tmp = new intGen.IntWithMinConstrain(10)
+        let tmp = new intGen.IntWithMinConstrain({minimum:10})
         expect(tmp.generateValid).toEqual(10);
         expect(tmp.generateInvalid).toEqual(9);
     });
 
     test("with exclusive min", () => {
-        let tmp = new intGen.IntWithMinConstrain(10, true)
+        let tmp = new intGen.IntWithMinConstrain({minimum:10, exclusiveMinimum:true})
         expect(tmp.generateValid).toEqual(11);
         expect(tmp.generateInvalid).toEqual(10);
     });
@@ -107,7 +107,7 @@ describe('intMinGenerator', function () {
 
 describe('intMaxGenerator', function () {
     test("must return an int", () => {
-        let tmp = new intGen.IntWithMaxConstrain(10)
+        let tmp = new intGen.IntWithMaxConstrain({maximum:10})
         expect(tmp.generateInvalid).toEqual(expect.any(Number));
         expect(tmp.generateValid).toEqual(expect.any(Number));
     });

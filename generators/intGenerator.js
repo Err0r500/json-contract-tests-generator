@@ -45,9 +45,9 @@ function getClosestMultiple(initial, multiple = 1, direction = dirEnum.up) {
 }
 
 class IntWithMinConstrain extends _Int {
-    constructor(value, exclusive = false, multipleOf) {
-        super(value, multipleOf)
-        this.exclusive = exclusive        
+    constructor(intObj) {
+        super(intObj.minimum, intObj.multipleOf)
+        this.exclusive = intObj.exclusiveMinimum     
     }
 
     get generateValid() {
@@ -60,9 +60,9 @@ class IntWithMinConstrain extends _Int {
 }
 
 class IntWithMaxConstrain extends _Int {
-    constructor(value, exclusive = false, multipleOf) {
-        super(value, multipleOf)
-        this.exclusive = exclusive
+    constructor(intObj) {
+        super(intObj.maximum, intObj.multipleOf)
+        this.exclusive = intObj.exclusiveMaximum
     }
 
     get generateValid() {
@@ -97,17 +97,15 @@ class IntWithMultipleOfConstrain extends gen.Generator {
 generate = (currentPath, intObj) => {
     let funcsToApply = []
 
-    if (intObj.minimum) {
-        funcsToApply.push(new IntWithMinConstrain(intObj.minimum, intObj.exclusiveMinimum, intObj.multipleOf))
-    } else {
-        funcsToApply.push(new IntWithMinConstrain(Number.MIN_SAFE_INTEGER, intObj.exclusiveMinimum, intObj.multipleOf))
+    if (!intObj.minimum) {
+        intObj.minimum = Number.MIN_SAFE_INTEGER   
     }
+    funcsToApply.push(new IntWithMinConstrain(intObj))
 
-    if (intObj.maximum) {
-        funcsToApply.push(new IntWithMaxConstrain(intObj.maximum, intObj.exclusiveMaximum, intObj.multipleOf))
-    } else {
-        funcsToApply.push(new IntWithMaxConstrain(Number.MAX_SAFE_INTEGER, intObj.exclusiveMaximum, intObj.multipleOf))
-    }
+    if (!intObj.maximum) {
+        intObj.maximum = Number.MAX_SAFE_INTEGER
+    } 
+    funcsToApply.push(new IntWithMaxConstrain(intObj))
 
     if (intObj.multipleOf) {
         funcsToApply.push(new IntWithMultipleOfConstrain(intObj))

@@ -43,7 +43,7 @@ describe('Generator is an abstract class ... kind of : ', function () {
 describe('Transformer ', function () {
     test("needs a path", () => {
         expect(() => {
-            new gen.Transformer('', [new intGen.IntWithMinConstrain(1)])
+            new gen.Transformer('', [new intGen.IntWithMinConstrain({minimum:1})])
         }).toThrow();
     })
 
@@ -60,6 +60,6 @@ describe('Transformer ', function () {
     })
 
     test("everything is fine", () => {
-        expect(new gen.Transformer('path', [new intGen.IntWithMinConstrain(1)])).toEqual(expect.any(gen.Transformer));
+        expect(new gen.Transformer('path', [new intGen.IntWithMinConstrain({minimum:1})])).toEqual(expect.any(gen.Transformer));
     })
 })

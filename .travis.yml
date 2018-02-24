@@ -8,5 +8,3 @@ install:
 script:
   - npm test
   - codecov
-# after_success:
-#   - ./bin/codecov -e TRAVIS_NODE_VERSION -f coverage/coverage.json
