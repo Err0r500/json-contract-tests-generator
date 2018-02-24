@@ -14,7 +14,7 @@
   },
   "main": "main.js",
   "dependencies": {
-    "lazy.js": "^0.5.1"
+    "codecov": "^3.0.0"
   },
   "repository": {
     "type": "git",
