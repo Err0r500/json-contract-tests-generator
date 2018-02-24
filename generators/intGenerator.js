@@ -3,9 +3,9 @@ const gen = require('./_main')
 /* 
 constrains applicable to Int : 
 
-- multipleOf int (drop if int == 1)
+- multipleOf int
 
-- maximum int
+- maximum int 
 - exclusiveMaximum bool
 
 - minimum int
@@ -19,11 +19,12 @@ class _Int extends gen.Generator {
         if (typeof value != 'number' || value % 1 != 0) {
             throw new TypeError("a _Int constructor needs an int");
         }
+        this.value = value;
+
+
         if (typeof multipleOf != 'number' || multipleOf <= 0 || multipleOf % 1 != 0) {
             throw new TypeError("a _Int constructor needs multiplof to be an Int greater than zero");
         }
-
-        this.value = value;
         this.multipleOf = multipleOf;
     }
 
@@ -36,26 +37,18 @@ class _Int extends gen.Generator {
     }
 }
 
-var dirEnum = Object.freeze({"up":1, "down":-1})
-function getClosestMultiple(initial, multiple = 1, direction = dirEnum.up) {
-    while (initial % multiple != 0 || initial == 0){
-        initial += direction
-    }
-    return initial
-}
-
 class IntWithMinConstrain extends _Int {
     constructor(intObj) {
         super(intObj.minimum, intObj.multipleOf)
-        this.exclusive = intObj.exclusiveMinimum     
+        this.exclusive = intObj.exclusiveMinimum
     }
 
     get generateValid() {
-        return this.exclusive ? getClosestMultiple(this.value + 1, this.multipleOf) : getClosestMultiple(this.value, this.multipleOf)
+        return getClosestMultiple(this.exclusive ? this.value + 1 : this.value, this.multipleOf)
     }
-    
+
     get generateInvalid() {
-        return this.exclusive ? getClosestMultiple(this.value, this.multipleOf, dirEnum.down) : getClosestMultiple(this.value - 1, this.multipleOf, dirEnum.down)
+        return getClosestMultiple(this.exclusive ? this.value : this.value - 1, this.multipleOf, dirEnum.down)
     }
 }
 
@@ -66,18 +59,18 @@ class IntWithMaxConstrain extends _Int {
     }
 
     get generateValid() {
-        return this.exclusive ? getClosestMultiple(this.value - 1, this.multipleOf, dirEnum.down) : getClosestMultiple(this.value, this.multipleOf, dirEnum.down)
+        return getClosestMultiple(this.exclusive ? this.value - 1 : this.value, this.multipleOf, dirEnum.down)
     }
 
     get generateInvalid() {
-        return this.exclusive ? getClosestMultiple(this.value, this.multipleOf) : getClosestMultiple(this.value + 1, this.multipleOf)
+        return getClosestMultiple(this.exclusive ? this.value : this.value + 1, this.multipleOf)
     }
 }
 
 class IntWithMultipleOfConstrain extends gen.Generator {
     constructor(intObj) {
         super()
-        
+
         this.multipleOf = intObj.multipleOf
         this.minimum = intObj.minimum
         this.maximum = intObj.maximum
@@ -86,7 +79,7 @@ class IntWithMultipleOfConstrain extends gen.Generator {
     }
 
     get generateValid() {
-        return this.exclusiveMinimum ? getClosestMultiple(this.minimum + 1, this.multipleOf, dirEnum.up) : getClosestMultiple(this.minimum, this.multipleOf, dirEnum.up)
+        return getClosestMultiple(this.exclusiveMinimum ? this.minimum + 1 : this.minimum, this.multipleOf, dirEnum.up)
     }
 
     get generateInvalid() {
@@ -98,13 +91,13 @@ generate = (currentPath, intObj) => {
     let funcsToApply = []
 
     if (!intObj.minimum) {
-        intObj.minimum = Number.MIN_SAFE_INTEGER   
+        intObj.minimum = Number.MIN_SAFE_INTEGER
     }
     funcsToApply.push(new IntWithMinConstrain(intObj))
 
     if (!intObj.maximum) {
         intObj.maximum = Number.MAX_SAFE_INTEGER
-    } 
+    }
     funcsToApply.push(new IntWithMaxConstrain(intObj))
 
     if (intObj.multipleOf) {
@@ -113,6 +106,19 @@ generate = (currentPath, intObj) => {
 
     return new gen.Transformer(currentPath, funcsToApply)
 }
+
+var dirEnum = Object.freeze({
+    "up": 1,
+    "down": -1
+})
+
+function getClosestMultiple(initial, multiple = 1, direction = dirEnum.up) {
+    while (initial % multiple != 0 || initial == 0) {
+        initial += direction
+    }
+    return initial
+}
+
 
 module.exports = {
     generate,
