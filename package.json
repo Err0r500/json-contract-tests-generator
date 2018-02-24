@@ -5,6 +5,7 @@
     "test": "jest --watch"
   },
   "jest": {
+    "coverageDirectory": "./coverage/",
     "collectCoverage": true
   },
   "devDependencies": {
