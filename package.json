@@ -2,7 +2,8 @@
   "name": "my-awesome-package",
   "version": "1.0.0",
   "scripts": {
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "codecov": "jest"
   },
   "jest": {
     "coverageDirectory": "./coverage/",
