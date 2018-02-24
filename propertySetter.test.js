@@ -22,9 +22,8 @@ describe('setNested', function () {
             name: "matth"
         }
 
-        expect(expected).toEqual(setter.objectPropertySetter(initial, 'id', function () {
-            return 'bar' 
-        }))        
+        expect(expected).toEqual(setter.objectPropertySetter(initial, 'id',  () => 'bar'))        
+        expect(expected).toEqual(setter.objectPropertySetter(initial, 'id', 'bar'))      
     });
 
     it('set complex nesting', function () {

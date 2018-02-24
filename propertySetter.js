@@ -1,3 +1,8 @@
+
+// functoApply can be : 
+// - the new value 
+// - a function that returns the new value
+
 const objectPropertySetter = (theObject, path, funcToApply) => {
     separator = '.';
 
@@ -10,8 +15,7 @@ const objectPropertySetter = (theObject, path, funcToApply) => {
                     if (typeof obj[property] === 'undefined') {
                         throw new TypeError("nothing found at path " + path)
                     } else {
-                        obj[property] = funcToApply() 
-                        // typeof funcToApply == 'function' ? obj[property] = funcToApply() : obj[property] = funcToApply;
+                        typeof funcToApply == 'function' ? obj[property] = funcToApply() : obj[property] = funcToApply;
                     }
                 }
                 return obj[property] 
