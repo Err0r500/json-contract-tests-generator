@@ -103,6 +103,22 @@ describe('intMinGenerator', function () {
         expect(tmp.generateValid).toEqual(11);
         expect(tmp.generateInvalid).toEqual(10);
     });
+
+    test("with exclusive min == 0", () => {
+        let tmp = new intGen.IntWithMinConstrain({minimum:0})
+        expect(tmp.generateValid).toEqual(0); 
+        expect(tmp.generateInvalid).toEqual(-1);
+
+        tmp = new intGen.IntWithMinConstrain({minimum:0, exclusiveMinimum:true})
+        expect(tmp.generateValid).toEqual(1); 
+        expect(tmp.generateInvalid).toEqual(0);
+    });
+
+    test("with MIN_SAFE_INTEGER", () => {
+        let tmp = new intGen.IntWithMinConstrain({minimum:Number.MIN_SAFE_INTEGER})
+        expect(tmp.generateValid).toEqual(Number.MIN_SAFE_INTEGER); 
+        expect(tmp.generateInvalid).toEqual(undefined);
+    });
 });
 
 describe('intMaxGenerator', function () {
@@ -110,6 +126,18 @@ describe('intMaxGenerator', function () {
         let tmp = new intGen.IntWithMaxConstrain({maximum:10})
         expect(tmp.generateInvalid).toEqual(expect.any(Number));
         expect(tmp.generateValid).toEqual(expect.any(Number));
+    });
+
+    test("with exclusive max == 0", () => {
+        let tmp = new intGen.IntWithMaxConstrain({maximum:0})
+        expect(tmp.generateValid).toEqual(0); 
+        expect(tmp.generateInvalid).toEqual(1);
+    });
+
+    test("with MAX_SAFE_INTEGER", () => {
+        let tmp = new intGen.IntWithMaxConstrain({maximum:Number.MAX_SAFE_INTEGER})
+        expect(tmp.generateValid).toEqual(Number.MAX_SAFE_INTEGER); 
+        expect(tmp.generateInvalid).toEqual(undefined);
     });
 });
 

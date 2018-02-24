@@ -7,8 +7,9 @@
         "id": {
             "description": "The unique identifier for a product",
             "type": "integer",
-            "minimum": 1000,
-            "maximum": 13400
+            "minimum": -1000,
+            "maximum": 140,
+            "multipleOf": 3
         },
         "name": {
             "description": "Name of the product",
@@ -28,7 +29,7 @@
                         5
                     ],
                     "minimum": 0,
-                    "maximum": 134
+                    "maximum": 12
                 },
                 "otherDimensions": {
                     "$id": "/properties/dimensions",

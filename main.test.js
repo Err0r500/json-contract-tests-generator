@@ -86,3 +86,13 @@ describe('traverse schema', function () {
         });
     });
 })
+
+
+describe('buildSet', function () {
+    test('no recursion', () => {
+
+        // mains.buildSet(h.objectFromFile('testdata/complex.json'))
+       
+     
+    });
+});

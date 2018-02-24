@@ -48,6 +48,9 @@ class IntWithMinConstrain extends _Int {
     }
 
     get generateInvalid() {
+        if (this.value === Number.MIN_SAFE_INTEGER){
+            return undefined
+        }
         return getClosestMultiple(this.exclusive ? this.value : this.value - 1, this.multipleOf, dirEnum.down)
     }
 }
@@ -63,6 +66,9 @@ class IntWithMaxConstrain extends _Int {
     }
 
     get generateInvalid() {
+        if (this.value === Number.MAX_SAFE_INTEGER){
+            return undefined
+        }
         return getClosestMultiple(this.exclusive ? this.value : this.value + 1, this.multipleOf)
     }
 }
@@ -90,12 +96,12 @@ class IntWithMultipleOfConstrain extends gen.Generator {
 generate = (currentPath, intObj) => {
     let funcsToApply = []
 
-    if (!intObj.minimum) {
+    if (typeof intObj.minimum  === 'undefined') {
         intObj.minimum = Number.MIN_SAFE_INTEGER
     }
     funcsToApply.push(new IntWithMinConstrain(intObj))
 
-    if (!intObj.maximum) {
+    if (typeof intObj.maximum === 'undefined') {
         intObj.maximum = Number.MAX_SAFE_INTEGER
     }
     funcsToApply.push(new IntWithMaxConstrain(intObj))
@@ -113,6 +119,9 @@ var dirEnum = Object.freeze({
 })
 
 function getClosestMultiple(initial, multiple = 1, direction = dirEnum.up) {
+    if (initial === 0) {
+        return 0
+    }
     while (initial % multiple != 0 || initial == 0) {
         initial += direction
     }

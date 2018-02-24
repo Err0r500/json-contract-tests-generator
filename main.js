@@ -1,6 +1,10 @@
 const intGen = require('./generators/intGenerator')
 const h = require('./helpers')
 
+const currentlyHandledTypes = [
+    'integer'
+]
+
 const genArray = (currentPath, obj) => {
     if (currentPath == '') {
         throw new TypeError("genArray received an empty string as path");
@@ -31,7 +35,10 @@ const traverseObject = (obj, currentPath = '', arrayToOutput = [], Cb) => {
             tmp[key] = traverseObject(obj[key]["properties"], tmpPath += '.' + key, arrayToOutput, Cb) // recurse on next level object
         } else if (typeof obj[key] == 'object') {
             tmp[key] = obj[key]["type"]; // for the model
-            arrayToOutput.push(Cb(currentPath + '.' + key, obj[key])) // for the transformers
+            
+            if (currentlyHandledTypes.includes(obj[key]["type"])) {
+                arrayToOutput.push(Cb(currentPath + '.' + key, obj[key])) // for the transformers
+            }
         }
     });
     return tmp
