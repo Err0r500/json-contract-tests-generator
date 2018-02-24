@@ -1,4 +1,4 @@
-nested = require('./nested');
+setter = require('./propertySetter');
 
 describe('setNested', function () {
     it('throws an error if the path is not found in the object', function () {
@@ -8,7 +8,7 @@ describe('setNested', function () {
         }
 
         expect(() => {
-            nested.setNested(initial, 'randomKey', () => {})
+            setter.objectPropertySetter(initial, 'pathNotFound', () => {})
         }).toThrow();
     });
 
@@ -21,9 +21,10 @@ describe('setNested', function () {
             id: "bar",
             name: "matth"
         }
-        expect(expected).toEqual(nested.setNested(initial, 'id', function () {
-            return 'bar'
-        }))
+
+        expect(expected).toEqual(setter.objectPropertySetter(initial, 'id', function () {
+            return 'bar' 
+        }))        
     });
 
     it('set complex nesting', function () {
@@ -54,7 +55,7 @@ describe('setNested', function () {
             }
         }
 
-        expect(expected).toEqual(nested.setNested(initial, 'identities.names[1].lastname', function () {
+        expect(expected).toEqual(setter.objectPropertySetter(initial, 'identities.names[1].lastname', function () {
             return 'jacquot'
         }))
     });
