@@ -2,15 +2,13 @@
   "name": "my-awesome-package",
   "version": "1.0.0",
   "scripts": {
-    "test": "jest",
-    "codecov": "jest"
+    "test": "jest"
   },
   "jest": {
     "coverageDirectory": "./coverage/",
     "collectCoverage": true
   },
   "devDependencies": {
-    "codecov": "^3.0.0",
     "jest": "^22.4.0"
   },
   "main": "main.js",

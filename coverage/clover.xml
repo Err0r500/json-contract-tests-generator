@@ -1,7 +1,127 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1519468641858" clover="3.2.0">
-  <project timestamp="1519468641858" name="All files">
-    <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0" elements="0" coveredelements="0" complexity="0" loc="0" ncloc="0" packages="0" files="0" classes="0">
+<coverage generated="1519468823247" clover="3.2.0">
+  <project timestamp="1519468823248" name="All files">
+    <metrics statements="99" coveredstatements="99" conditionals="66" coveredconditionals="66" methods="23" coveredmethods="23" elements="188" coveredelements="188" complexity="0" loc="99" ncloc="99" packages="2" files="5" classes="5">
+      <package name="json-generator">
+        <metrics statements="39" coveredstatements="39" conditionals="18" coveredconditionals="18" methods="6" coveredmethods="6"/>
+        <file name="helpers.js" path="/home/matth/Projects/json-generator/helpers.js">
+          <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+          <line num="1" count="1" type="stmt"/>
+          <line num="3" count="1" type="stmt"/>
+          <line num="4" count="4" type="stmt"/>
+          <line num="5" count="4" type="stmt"/>
+          <line num="8" count="1" type="stmt"/>
+        </file>
+        <file name="main.js" path="/home/matth/Projects/json-generator/main.js">
+          <metrics statements="24" coveredstatements="24" conditionals="14" coveredconditionals="14" methods="3" coveredmethods="3"/>
+          <line num="1" count="1" type="stmt"/>
+          <line num="2" count="1" type="stmt"/>
+          <line num="4" count="1" type="stmt"/>
+          <line num="5" count="3" type="cond" truecount="2" falsecount="0"/>
+          <line num="6" count="1" type="stmt"/>
+          <line num="9" count="2" type="cond" truecount="2" falsecount="0"/>
+          <line num="11" count="1" type="stmt"/>
+          <line num="14" count="1" type="stmt"/>
+          <line num="19" count="1" type="cond" truecount="2" falsecount="0"/>
+          <line num="20" count="11" type="stmt"/>
+          <line num="21" count="11" type="stmt"/>
+          <line num="23" count="11" type="stmt"/>
+          <line num="24" count="34" type="cond" truecount="2" falsecount="0"/>
+          <line num="26" count="4" type="stmt"/>
+          <line num="27" count="4" type="stmt"/>
+          <line num="28" count="30" type="cond" truecount="2" falsecount="0"/>
+          <line num="29" count="1" type="stmt"/>
+          <line num="30" count="29" type="cond" truecount="2" falsecount="0"/>
+          <line num="31" count="3" type="stmt"/>
+          <line num="32" count="26" type="cond" truecount="2" falsecount="0"/>
+          <line num="33" count="10" type="stmt"/>
+          <line num="34" count="10" type="stmt"/>
+          <line num="37" count="11" type="stmt"/>
+          <line num="40" count="1" type="stmt"/>
+        </file>
+        <file name="nested.js" path="/home/matth/Projects/json-generator/nested.js">
+          <metrics statements="10" coveredstatements="10" conditionals="4" coveredconditionals="4" methods="2" coveredmethods="2"/>
+          <line num="1" count="1" type="stmt"/>
+          <line num="2" count="3" type="stmt"/>
+          <line num="3" count="3" type="stmt"/>
+          <line num="8" count="6" type="cond" truecount="2" falsecount="0"/>
+          <line num="9" count="3" type="cond" truecount="2" falsecount="0"/>
+          <line num="10" count="1" type="stmt"/>
+          <line num="12" count="2" type="stmt"/>
+          <line num="15" count="5" type="stmt"/>
+          <line num="18" count="2" type="stmt"/>
+          <line num="21" count="1" type="stmt"/>
+        </file>
+      </package>
+      <package name="json-generator.generators">
+        <metrics statements="60" coveredstatements="60" conditionals="48" coveredconditionals="48" methods="17" coveredmethods="17"/>
+        <file name="_main.js" path="/home/matth/Projects/json-generator/generators/_main.js">
+          <metrics statements="18" coveredstatements="18" conditionals="16" coveredconditionals="16" methods="3" coveredmethods="3"/>
+          <line num="3" count="38" type="cond" truecount="2" falsecount="0"/>
+          <line num="4" count="1" type="stmt"/>
+          <line num="7" count="37" type="cond" truecount="2" falsecount="0"/>
+          <line num="8" count="1" type="stmt"/>
+          <line num="10" count="36" type="cond" truecount="2" falsecount="0"/>
+          <line num="11" count="1" type="stmt"/>
+          <line num="16" count="9" type="stmt"/>
+          <line num="22" count="13" type="cond" truecount="2" falsecount="0"/>
+          <line num="23" count="1" type="stmt"/>
+          <line num="26" count="12" type="cond" truecount="2" falsecount="0"/>
+          <line num="27" count="1" type="stmt"/>
+          <line num="30" count="11" type="cond" truecount="2" falsecount="0"/>
+          <line num="31" count="1" type="stmt"/>
+          <line num="34" count="10" type="cond" truecount="4" falsecount="0"/>
+          <line num="35" count="1" type="stmt"/>
+          <line num="38" count="9" type="stmt"/>
+          <line num="39" count="9" type="stmt"/>
+          <line num="43" count="3" type="stmt"/>
+        </file>
+        <file name="intGenerator.js" path="/home/matth/Projects/json-generator/generators/intGenerator.js">
+          <metrics statements="42" coveredstatements="42" conditionals="32" coveredconditionals="32" methods="14" coveredmethods="14"/>
+          <line num="1" count="3" type="stmt"/>
+          <line num="18" count="30" type="stmt"/>
+          <line num="19" count="30" type="cond" truecount="4" falsecount="0"/>
+          <line num="20" count="3" type="stmt"/>
+          <line num="22" count="27" type="cond" truecount="5" falsecount="0"/>
+          <line num="23" count="1" type="stmt"/>
+          <line num="26" count="26" type="stmt"/>
+          <line num="27" count="26" type="stmt"/>
+          <line num="31" count="1" type="stmt"/>
+          <line num="35" count="1" type="stmt"/>
+          <line num="39" count="3" type="stmt"/>
+          <line num="41" count="51" type="cond" truecount="2" falsecount="0"/>
+          <line num="42" count="148" type="stmt"/>
+          <line num="44" count="51" type="stmt"/>
+          <line num="49" count="14" type="stmt"/>
+          <line num="50" count="13" type="stmt"/>
+          <line num="54" count="10" type="cond" truecount="2" falsecount="0"/>
+          <line num="58" count="10" type="cond" truecount="2" falsecount="0"/>
+          <line num="64" count="11" type="stmt"/>
+          <line num="65" count="10" type="stmt"/>
+          <line num="69" count="9" type="cond" truecount="2" falsecount="0"/>
+          <line num="73" count="9" type="cond" truecount="2" falsecount="0"/>
+          <line num="79" count="2" type="stmt"/>
+          <line num="81" count="2" type="stmt"/>
+          <line num="82" count="2" type="stmt"/>
+          <line num="83" count="2" type="stmt"/>
+          <line num="84" count="2" type="stmt"/>
+          <line num="85" count="2" type="stmt"/>
+          <line num="89" count="4" type="cond" truecount="2" falsecount="0"/>
+          <line num="93" count="4" type="stmt"/>
+          <line num="97" count="3" type="stmt"/>
+          <line num="98" count="8" type="stmt"/>
+          <line num="100" count="8" type="cond" truecount="2" falsecount="0"/>
+          <line num="101" count="6" type="stmt"/>
+          <line num="103" count="2" type="stmt"/>
+          <line num="106" count="8" type="cond" truecount="2" falsecount="0"/>
+          <line num="107" count="6" type="stmt"/>
+          <line num="109" count="2" type="stmt"/>
+          <line num="112" count="8" type="cond" truecount="2" falsecount="0"/>
+          <line num="113" count="2" type="stmt"/>
+          <line num="116" count="8" type="stmt"/>
+          <line num="119" count="3" type="stmt"/>
+        </file>
+      </package>
     </metrics>
   </project>
 </coverage>
