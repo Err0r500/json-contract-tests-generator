@@ -3,4 +3,6 @@ language:
 install:
   - npm install -g codecov
 script:
-  - codecov
+  - test
+# after_success:
+#   - ./bin/codecov -e TRAVIS_NODE_VERSION -f coverage/coverage.json
