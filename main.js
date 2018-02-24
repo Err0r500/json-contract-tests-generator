@@ -22,7 +22,7 @@ const traverseObject = (obj, currentPath = '', arrayToOutput = [], Cb) => {
 
     Object.keys(obj).forEach(key => {
         if (key == "properties") {
-            // obj is the object root otherwise the recursion is would have been called on obj[key]["properties"]
+            // obj is the object root otherwise the recursion would have been called on obj[key]["properties"] (below)
             tmp.required_fields = []
             tmp.model = traverseObject(obj[key], currentPath, arrayToOutput, Cb)
         } else if (key == "required") {

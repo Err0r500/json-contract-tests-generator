@@ -1,12 +1,70 @@
 const gen = require('./_main')
 const intGen = require('./intGenerator')
 
+// todo remove duplicates on multiple of
+describe('generate test values', function () {
+    test("valid set", () => {
+        let path = 'age'
+
+        let t = intGen.generate(path, {
+            minimum: -5,
+            maximum: 15,
+        })
+        expect(t.functionsToApply.map(e => e.generateValid)).toEqual(expect.arrayContaining([-5, 15]))
+        expect(t.functionsToApply.map(e => e.generateValid)).toHaveLength(2);
+
+        expect(t.functionsToApply.map(e => e.generateInvalid)).toEqual(expect.arrayContaining([-6, 16]))
+        expect(t.functionsToApply.map(e => e.generateInvalid)).toHaveLength(2);
+
+        t = intGen.generate(path, {
+            minimum: -5,
+            maximum: 15,
+            exclusiveMinimum: true,
+            exclusiveMaximum: true
+        })
+        expect(t.functionsToApply.map(e => e.generateValid)).toEqual(expect.arrayContaining([-4, 14]))
+        expect(t.functionsToApply.map(e => e.generateValid)).toHaveLength(2);
+
+        expect(t.functionsToApply.map(e => e.generateInvalid)).toEqual(expect.arrayContaining([-5, 15]))
+        expect(t.functionsToApply.map(e => e.generateInvalid)).toHaveLength(2);
+
+
+        t = intGen.generate(path, {
+            minimum: -5,
+            maximum: 15,
+            multipleOf: 7
+        })
+        expect(t.functionsToApply.map(e => e.generateValid)).toEqual(expect.arrayContaining([7, 14, 7]))
+        expect(t.functionsToApply.map(e => e.generateValid)).toHaveLength(3);
+        
+        expect(t.functionsToApply.map(e => e.generateInvalid)).toEqual(expect.arrayContaining([-7, 21, 8]))
+        expect(t.functionsToApply.map(e => e.generateInvalid)).toHaveLength(3);
+
+        t = intGen.generate(path, {
+            minimum: -14,
+            maximum: 21,
+            multipleOf: 7,
+            exclusiveMinimum: true,
+            exclusiveMaximum: true
+        })
+        expect(t.functionsToApply.map(e => e.generateValid)).toEqual(expect.arrayContaining([-7, 14, -7]))
+        expect(t.functionsToApply.map(e => e.generateValid)).toHaveLength(3);
+
+        expect(t.functionsToApply.map(e => e.generateInvalid)).toEqual(expect.arrayContaining([-14, 21, -6]))
+        expect(t.functionsToApply.map(e => e.generateInvalid)).toHaveLength(3);
+    });
+});
+
+
 describe('_Int constructor', function () {
     test("must be constructed from an int", () => {
         expect(new intGen._Int(1)).toEqual(expect.any(intGen._Int));
-        
+
         expect(() => {
             new intGen._Int('blabl')
+        }).toThrow();
+        expect(() => {
+            new intGen._Int(12, 0)
         }).toThrow();
 
         expect(() => {
@@ -36,8 +94,14 @@ describe('IntWith (Min/Max) Constrain Generator', function () {
 describe('intMinGenerator', function () {
     test("must return an int", () => {
         let tmp = new intGen.IntWithMinConstrain(10)
-        expect(tmp.generateInvalid).toEqual(expect.any(Number));
-        expect(tmp.generateValid).toEqual(expect.any(Number));
+        expect(tmp.generateValid).toEqual(10);
+        expect(tmp.generateInvalid).toEqual(9);
+    });
+
+    test("with exclusive min", () => {
+        let tmp = new intGen.IntWithMinConstrain(10, true)
+        expect(tmp.generateValid).toEqual(11);
+        expect(tmp.generateInvalid).toEqual(10);
     });
 });
 
@@ -54,8 +118,26 @@ describe('intGenerator', function () {
     test("must be constructed from an int", () => {
         let path = 'age'
         expect(intGen.generate(path, {})).toEqual(expect.any(gen.Transformer));
-        expect(intGen.generate(path, {minimum:10})).toEqual(expect.any(gen.Transformer));
-        expect(intGen.generate(path, {maximum:10})).toEqual(expect.any(gen.Transformer));
-        expect(intGen.generate(path, {minimum:10, maximum:10})).toEqual(expect.any(gen.Transformer));
+        expect(intGen.generate(path, {
+            minimum: 10
+        })).toEqual(expect.any(gen.Transformer));
+        expect(intGen.generate(path, {
+            maximum: 10
+        })).toEqual(expect.any(gen.Transformer));
+        expect(intGen.generate(path, {
+            minimum: 10,
+            maximum: 10
+        })).toEqual(expect.any(gen.Transformer));
+
     });
 });
+
+
+
+test("getClosestMultiple", () => {
+    expect(intGen.getClosestMultiple(10)).toEqual(10);
+    expect(intGen.getClosestMultiple(10, 8)).toEqual(16);
+    expect(intGen.getClosestMultiple(-10, 8)).toEqual(-8);
+    expect(intGen.getClosestMultiple(10, 8, intGen.dirEnum.down)).toEqual(8);
+    expect(intGen.getClosestMultiple(-10, 8, intGen.dirEnum.down)).toEqual(-16);
+})
