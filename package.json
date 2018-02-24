@@ -10,12 +10,11 @@
     "collectCoverage": true
   },
   "devDependencies": {
+    "codecov": "^3.0.0",
     "jest": "^22.4.0"
   },
   "main": "main.js",
-  "dependencies": {
-    "codecov": "^3.0.0"
-  },
+  "dependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Err0r500/json-generator.git"
