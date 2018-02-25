@@ -16,13 +16,12 @@ constrains applicable to Int :
 class _Int extends gen.Generator {
     constructor(value, multipleOf = 1) {
         super()
-        if (typeof value != 'number' || value % 1 != 0) {
+        if (typeof value != 'number' || !Number.isInteger(value)) {
             throw new TypeError("a _Int constructor needs an int");
         }
         this.value = value;
 
-
-        if (typeof multipleOf != 'number' || multipleOf <= 0 || multipleOf % 1 != 0) {
+        if (typeof multipleOf != 'number' || multipleOf <= 0 || !Number.isInteger(multipleOf)) {
             throw new TypeError("a _Int constructor needs multiplof to be an Int greater than zero");
         }
         this.multipleOf = multipleOf;

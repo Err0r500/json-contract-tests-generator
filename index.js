@@ -1,5 +1,6 @@
 const dataset = require('./datasetGenerator/dataset')
 const intGen = require('./generators/intGenerator')
+const numberGen = require('./generators/numberGenerator')
 
 //
 // Command-line argument parsing to get the path of the JSON Schema
@@ -23,7 +24,8 @@ process.argv.forEach(function (val) {
 // Put your generators here
 //
 typeModifiers = new Map([
-    ["intGenerator", intGen]
+    ["intGenerator", intGen],
+    ["numberGenerator", numberGen]
 ])
 
 // 
@@ -37,4 +39,4 @@ data.buildDataset
 //
 // just to output the Dataset
 //
-data.outputDataset
+console.log(JSON.stringify(data, null, 2))

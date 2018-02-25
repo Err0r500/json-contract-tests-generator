@@ -61,10 +61,11 @@
                 },
                 "height": {
                     "$id": "/properties/dimensions/properties/height",
-                    "type": "integer",
+                    "type": "number",
                     "title": "The Height Schema",
                     "description": "An explanation about the purpose of this instance.",
                     "default": 0,
+                    "minimum": 0,
                     "examples": [
                         10
                     ]

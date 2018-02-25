@@ -3,12 +3,14 @@ const gen = require('../generators/_main')
 const object = require('./object')
 
 const currentlyHandledTypes = [
-    'integer'
+    'integer',
+    'number'
 ]
 
 class TypeModifiers {
     constructor(mapOfModifiers) {
         this.intGenerator = mapOfModifiers.get('intGenerator')
+        this.numberGenerator = mapOfModifiers.get('numberGenerator')
     }
 }
 
@@ -103,10 +105,6 @@ class Dataset {
                 })
             )
     }
-
-    get outputDataset() {
-        console.log(JSON.stringify(this.dataset, null, 2))
-    }
 }
 
 
@@ -115,7 +113,7 @@ class ModifierGenerator {
         if (!(typeModifiers instanceof TypeModifiers)) {
             throw new TypeError("tried to instanciated a modifiergenerator without an instance TypeModifiers");
         }
-        this.intGenerator = typeModifiers.intGenerator
+        this.typeModifiers = typeModifiers
     }
 
     generate(currentPath, obj) {
@@ -125,7 +123,9 @@ class ModifierGenerator {
 
         switch (obj.type) {
             case "integer":
-                return this.intGenerator.generate(currentPath, obj)
+                return this.typeModifiers.intGenerator.generate(currentPath, obj)
+            case "number":
+                return this.typeModifiers.numberGenerator.generate(currentPath, obj)
 
             default:
                 throw new TypeError("genArray unknown type" + typeof obj)
