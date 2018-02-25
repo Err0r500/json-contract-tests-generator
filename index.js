@@ -1,4 +1,3 @@
-const h = require('./helpers')
 const dataset = require('./datasetGenerator/dataset')
 
 const inputPathRegex = /-i=(.*)/g;
@@ -20,8 +19,8 @@ process.argv.forEach(function (val) {
 
 // TODO : loop if input path is folder
 // handle path with quotes
-let schema = h.objectFromFile(schemaPath)
-let data = new dataset.Dataset(schema)
+let data = new dataset.Dataset(schemaPath)
+data.buildGenerator
 data.buildModel
 data.buildDataset
 data.outputDataset

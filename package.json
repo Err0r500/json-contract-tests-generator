@@ -2,6 +2,7 @@
   "name": "my-awesome-package",
   "version": "1.0.0",
   "scripts": {
+    "start": "node index.js",
     "test": "jest",
     "test:w": "jest --watch"
   },
@@ -12,7 +13,9 @@
   "devDependencies": {
     "jest": "^22.4.0"
   },
-  "main": "main.js",
+  "engines": {
+    "node": "v8.9.x"
+  },
   "dependencies": {},
   "repository": {
     "type": "git",

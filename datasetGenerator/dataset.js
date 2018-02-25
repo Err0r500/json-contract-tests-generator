@@ -3,23 +3,56 @@ const gen = require('../generators/_main')
 const intGen = require('../generators/intGenerator')
 const object = require('./object')
 
+const currentlyHandledTypes = [
+    'integer'
+]
+
 class Dataset {
     constructor(schema) {
-        this.modifiers = []
         if (typeof schema == 'string') {
-            this.generator = object.traverse(h.objectFromFile(schema), '', this.modifiers, genArray)
+            this.schema = h.objectFromFile(schema)
         } else if (typeof schema == 'object') {
-            this.generator = object.traverse(schema, '', this.modifiers, genArray)
+            this.schema = schema
         } else {
             throw new TypeError("Dataset failed");
         }
 
+        this.modifiers = []
         this.firstValidKeys = new Map();
-        this.dataset = {}
-        this.dataset.valid = new Array();
-        this.dataset.invalid = new Array();
+        this.dataset = {
+            valid: new Array(),
+            invalid: new Array(),
+        }
     }
 
+    get buildGenerator() {
+        this.generator = this.traverseSchema(this.schema, '', this.modifiers, new ModifierGenerator(typeModifiers))
+    }
+
+    traverseSchema(obj, currentPath = '', arrayToOutput = [], modifierGenerator) {
+        let tmp = {}
+        let tmpPath = currentPath
+
+        Object.keys(obj).forEach(key => {
+            if (key == "properties") { // obj is the object root otherwise the recursion would have been called on obj[key]["properties"] (below)
+                tmp.required_fields = []
+                tmp.model = this.traverseSchema(obj[key], currentPath, arrayToOutput, modifierGenerator)
+            } else if (key == "required") {
+                tmp.required_fields = obj[key] // add required fields to root object
+            } else if (obj[key]["properties"]) {
+                tmp[key] = this.traverseSchema(obj[key]["properties"], tmpPath += '.' + key, arrayToOutput, modifierGenerator) // recurse on next level object
+            } else if (typeof obj[key] == 'object') {
+                tmp[key] = obj[key]["type"]; // for the model
+
+                if (currentlyHandledTypes.includes(obj[key]["type"])) {
+                    arrayToOutput.push(modifierGenerator.generate(currentPath + '.' + key, obj[key])) // for the transformers
+                }
+            }
+        });
+        return tmp
+    };
+
+    // build model generates a valid model and adds the applied keys to firstValidKeys
     get buildModel() {
         this.modifiers.map(
             (mod) => mod.functionsToApply.map(
@@ -50,7 +83,7 @@ class Dataset {
 
         this.modifiers
             .map(mod => mod.functionsToApply
-                .filter((e) => typeof e.generateInvalid != 'undefined') // not relevant invalid return undefined
+                .filter((e) => typeof e.generateInvalid != 'undefined') // not relevant generateInvalid return undefined
                 .map((e) => {
                     let tmp = {}
                     tmp.model = JSON.parse(JSON.stringify(this.generator.model));
@@ -60,31 +93,36 @@ class Dataset {
             )
     }
 
-    get log() {
-        console.log(JSON.stringify(this, null, 50))
-    }
-
     get outputDataset() {
         console.log(JSON.stringify(this.dataset, null, 2))
     }
 }
 
-const genArray = (currentPath, obj) => {
-    if (currentPath == '') {
-        throw new TypeError("genArray received an empty string as path");
+const typeModifiers = {
+    intGenerator: intGen
+}
+
+class ModifierGenerator {
+    constructor(typeModifiers) {
+        this.intGenerator = typeModifiers.intGenerator
     }
 
-    switch (obj.type) {
-        case "integer":
-            return intGen.generate(currentPath, obj)
+    generate(currentPath, obj) {
+        if (currentPath == '') {
+            throw new TypeError("genArray received an empty string as path");
+        }
 
-        default:
-            throw new TypeError("genArray unknown type" + typeof obj)
+        switch (obj.type) {
+            case "integer":
+                return this.intGenerator.generate(currentPath, obj)
 
+            default:
+                throw new TypeError("genArray unknown type" + typeof obj)
+        }
     }
 }
 
 module.exports = {
     Dataset,
-    genArray
+    ModifierGenerator
 };
