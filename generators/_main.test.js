@@ -45,7 +45,7 @@ describe('Transformer ', function () {
         expect(() => {
             new gen.Transformer('', [new intGen.IntWithMinConstrain({minimum:1})])
         }).toThrow();
-    })
+    }) 
 
     test("needs an array of tranformers", () => {
         expect(() => {

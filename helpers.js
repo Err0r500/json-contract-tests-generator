@@ -6,5 +6,5 @@ const objectFromFile = (jsonSchemaPath) => {
 }
 
 module.exports = {
-    objectFromFile,
-} 
+    objectFromFile
+}
