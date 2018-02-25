@@ -1,4 +1,5 @@
 const dataset = require('./datasetGenerator/dataset')
+const intGen = require('./generators/intGenerator')
 
 const inputPathRegex = /-i=(.*)/g;
 
@@ -19,7 +20,11 @@ process.argv.forEach(function (val) {
 
 // TODO : loop if input path is folder
 // handle path with quotes
-let data = new dataset.Dataset(schemaPath)
+
+typeModifiers = new Map()
+typeModifiers.set("intGenerator", intGen)
+
+let data = new dataset.Dataset(schemaPath, new dataset.TypeModifiers(typeModifiers))
 data.buildGenerator
 data.buildModel
 data.buildDataset

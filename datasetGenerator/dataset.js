@@ -1,14 +1,24 @@
 const h = require('../helpers')
 const gen = require('../generators/_main')
-const intGen = require('../generators/intGenerator')
 const object = require('./object')
 
 const currentlyHandledTypes = [
     'integer'
 ]
 
+class TypeModifiers {
+    constructor(mapOfModifiers) {
+        this.intGenerator = mapOfModifiers.get('intGenerator')
+    }
+}
+
 class Dataset {
-    constructor(schema) {
+    constructor(schema, typeModifiers) {
+        if (typeof typeModifiers === 'undefined' || !(typeModifiers instanceof TypeModifiers)) {
+            throw new TypeError("tried to instanciate a Dataset without an instance TypeModifiers");
+        }
+        this.typeModifiers = typeModifiers
+
         if (typeof schema == 'string') {
             this.schema = h.objectFromFile(schema)
         } else if (typeof schema == 'object') {
@@ -16,6 +26,7 @@ class Dataset {
         } else {
             throw new TypeError("Dataset failed");
         }
+
 
         this.modifiers = []
         this.firstValidKeys = new Map();
@@ -26,7 +37,7 @@ class Dataset {
     }
 
     get buildGenerator() {
-        this.generator = this.traverseSchema(this.schema, '', this.modifiers, new ModifierGenerator(typeModifiers))
+        this.generator = this.traverseSchema(this.schema, '', this.modifiers, new ModifierGenerator(this.typeModifiers))
     }
 
     traverseSchema(obj, currentPath = '', arrayToOutput = [], modifierGenerator) {
@@ -98,12 +109,12 @@ class Dataset {
     }
 }
 
-const typeModifiers = {
-    intGenerator: intGen
-}
 
 class ModifierGenerator {
     constructor(typeModifiers) {
+        if (!(typeModifiers instanceof TypeModifiers)) {
+            throw new TypeError("tried to instanciated a modifiergenerator without an instance TypeModifiers");
+        }
         this.intGenerator = typeModifiers.intGenerator
     }
 
@@ -124,5 +135,6 @@ class ModifierGenerator {
 
 module.exports = {
     Dataset,
+    TypeModifiers,
     ModifierGenerator
 };

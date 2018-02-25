@@ -1,27 +1,40 @@
 const dataset = require('./dataset')
+const intGen = require('../generators/intGenerator')
+
 const h = require('../helpers')
 
 describe('Dataset constructor', function () {
-    test("must be constructed from a string", () => {
-        let schemaPath = "testdata/complex.json"
-        let schema = h.objectFromFile(schemaPath)
+    let schemaPath = "testdata/complex.json"
+    let schema = h.objectFromFile(schemaPath)
+    let fakeTypeMod = new dataset.TypeModifiers(new Map())
 
-        expect(new dataset.Dataset(schemaPath)).toEqual(expect.any(dataset.Dataset));
-        expect(new dataset.Dataset(schema)).toEqual(expect.any(dataset.Dataset));
+    test("must be constructed from a string", () => {
+        expect(new dataset.Dataset(schemaPath, fakeTypeMod)).toEqual(expect.any(dataset.Dataset));
+        expect(new dataset.Dataset(schema, fakeTypeMod)).toEqual(expect.any(dataset.Dataset));
 
         expect(() => {
-            new dataset.Dataset(1)
+            new dataset.Dataset(schema, 'ooops')
         }).toThrow();
-
-        let data = new dataset.Dataset(schema)
-        data.buildGenerator
-        data.buildModel
-        data.buildDataset
-        data.outputDataset     
-
-        expect(data.dataset.invalid.length).toBeGreaterThan(1);
-        expect(data.dataset.valid.length).toBeGreaterThan(1);
+        expect(() => {
+            new dataset.Dataset(1, fakeTypeMod)
+        }).toThrow();
     });
+});
+
+describe('run index like', function () {
+    let schemaPath = "testdata/complex.json"
+
+    typeModifiers = new Map()
+    typeModifiers.set("intGenerator", intGen)
+
+    let data = new dataset.Dataset(schemaPath, new dataset.TypeModifiers(typeModifiers))
+    data.buildGenerator
+    data.buildModel
+    data.buildDataset
+    data.outputDataset
+
+    expect(data.dataset.valid.length).toBeGreaterThan(0);
+    expect(data.dataset.invalid.length).toBeGreaterThan(0);
 });
 
 
@@ -29,11 +42,19 @@ describe('Dataset constructor', function () {
 describe('genArray', function () {
     const testValidPath = 'anyPath'
     
-    let fakeModGenerator = {
-        generate: jest.fn()
-    }
+    let modGen = new dataset.ModifierGenerator(
+        new dataset.TypeModifiers(
+            new Map([['intGenerator', {
+                generate: jest.fn()
+            }]])
+        )
+    )
 
-    let modGen = new dataset.ModifierGenerator({intGenerator:fakeModGenerator})
+    test('genArray throws an error if it receives an empty path', () => {
+        expect(() => {
+            new dataset.ModifierGenerator()
+        }).toThrow();
+    });
 
     test('genArray throws an error if it receives an empty path', () => {
         expect(() => {
@@ -53,17 +74,19 @@ describe('genArray', function () {
         }
 
         modGen.generate(testValidPath, obj)
-        expect(fakeModGenerator.generate).toBeCalledWith(testValidPath, obj);
+        expect(modGen.intGenerator.generate).toBeCalledWith(testValidPath, obj);
     });
 })
 
 
 describe('traverse schema', function () {
+    let fakeTypeMod = new dataset.TypeModifiers(new Map())
     let fakeModGenerator = {
         generate: jest.fn()
     }
+
     test('no recursion', () => {
-        _dataset = new dataset.Dataset('testdata/00.json')
+        _dataset = new dataset.Dataset('testdata/00.json', fakeTypeMod)
 
         let parsed = _dataset.traverseSchema(_dataset.schema, undefined, undefined, fakeModGenerator)
         expect(parsed).toEqual({
@@ -76,7 +99,7 @@ describe('traverse schema', function () {
     });
 
     test('required fields, no recursion', () => {
-        _dataset = new dataset.Dataset('testdata/03.json')
+        _dataset = new dataset.Dataset('testdata/03.json', fakeTypeMod)
         let parsed = _dataset.traverseSchema(_dataset.schema, undefined, undefined, fakeModGenerator)
         expect(parsed).toEqual({
             "model": {
@@ -92,7 +115,7 @@ describe('traverse schema', function () {
     });
 
     test('1 level recursion', () => {
-        _dataset = new dataset.Dataset('testdata/01.json')
+        _dataset = new dataset.Dataset('testdata/01.json', fakeTypeMod)
 
         let parsed = _dataset.traverseSchema(_dataset.schema, undefined, undefined, fakeModGenerator)
         expect(parsed).toEqual({
@@ -108,7 +131,7 @@ describe('traverse schema', function () {
     });
 
     test('2 levels recursion', () => {
-        _dataset = new dataset.Dataset('testdata/02.json')
+        _dataset = new dataset.Dataset('testdata/02.json', fakeTypeMod)
         let parsed = _dataset.traverseSchema(_dataset.schema, undefined, undefined, fakeModGenerator)
         expect(parsed).toEqual({
             "model": {
