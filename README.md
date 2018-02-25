@@ -5,7 +5,7 @@
 
 Usage : 
 ```
-node main.js -i={{path-to-json-schema}}
+node . -i={{path-to-json-schema}}
 ```
 
 will output the dataset testing edge cases, like :
@@ -28,7 +28,7 @@ will output the dataset testing edge cases, like :
 }
 ```
 
-### Tests :
+### Produces the Test set :
 ```
 {
   "valid": [
