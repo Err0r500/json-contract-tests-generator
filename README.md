@@ -10,18 +10,43 @@ node main.js -i={{path-to-json-schema}}
 
 will output the dataset testing edge cases, like :
 
+### JSON Schema :
+```
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "title": "title",
+    "description": "verySimple json schema",
+    "type": "object",
+    "properties": {
+        "id": {
+            "description": "The unique identifier for a product",
+            "type": "integer",
+            "minimum": 12,
+            "multipleOf": 5
+        }
+    }
+}
+```
+
+### Tests :
 ```
 {
   "valid": [
     {
-      "id": -9007199254740991,
-      "name": "string"
+      "id": 15
     },
     {
-      "id": 9007199254740991,
-      "name": "string"
+      "id": 9007199254740990
     }
   ],
-  "invalid": []
+  "invalid": [
+    {
+      "id": 10
+    },
+    {
+      "id": 16
+    }
+  ]
 }
+
 ```
