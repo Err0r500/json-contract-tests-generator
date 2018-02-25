@@ -1,8 +1,10 @@
 const dataset = require('./datasetGenerator/dataset')
 const intGen = require('./generators/intGenerator')
 
+//
+// Command-line argument parsing to get the path of the JSON Schema
+//
 const inputPathRegex = /-i=(.*)/g;
-
 let schemaPath = ""
 process.argv.forEach(function (val) {
     let m;
@@ -17,15 +19,22 @@ process.argv.forEach(function (val) {
     }
 });
 
+//
+// Put your generators here
+//
+typeModifiers = new Map([
+    ["intGenerator", intGen]
+])
 
-// TODO : loop if input path is folder
-// handle path with quotes
-
-typeModifiers = new Map()
-typeModifiers.set("intGenerator", intGen)
-
+// 
+// Build the Dataset from the JSON Schema
+//
 let data = new dataset.Dataset(schemaPath, new dataset.TypeModifiers(typeModifiers))
 data.buildGenerator
 data.buildModel
 data.buildDataset
+
+//
+// just to output the Dataset
+//
 data.outputDataset
