@@ -3,6 +3,10 @@
 [![BCH compliance](https://bettercodehub.com/edge/badge/Err0r500/json-contract-tests-generator?branch=master)](https://bettercodehub.com/)
 
 
+## JSON Schema Reference
+https://spacetelescope.github.io/understanding-json-schema/reference/
+
+
 Usage : 
 ```
 node . -i={{path-to-json-schema}}
